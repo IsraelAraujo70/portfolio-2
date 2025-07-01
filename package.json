@@ -16,6 +16,7 @@
   "dependencies": {
     "@fullpage/react-fullpage": "^0.1.40",
     "@reduxjs/toolkit": "^2.2.1",
+    "framer-motion": "^12.22.0",
     "next": "14.2.0",
     "react": "^18",
     "react-dom": "^18",
