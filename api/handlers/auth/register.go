@@ -1,6 +1,8 @@
 package auth
 
 import (
+	"log"
+	"os"
 	"portfolio-api/config"
 	"portfolio-api/models"
 	"portfolio-api/utils"
@@ -56,10 +58,14 @@ func Register(c *fiber.Ctx) error {
 		})
 	}
 
-	// Definir role padrão
-	role := request.Role
-	if role == "" {
-		role = "user"
+	// Verificar código admin e definir role
+	adminCode := os.Getenv("ADMIN_REGISTRATION_CODE")
+	role := "user" // Padrão sempre user
+	
+	// Se código admin foi fornecido e está correto
+	if request.AdminCode != "" && request.AdminCode == adminCode && adminCode != "" {
+		role = "admin"
+		log.Printf("SECURITY: Admin account created for email: %s", request.Email)
 	}
 
 	// Criar usuário

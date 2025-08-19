@@ -23,10 +23,10 @@ type User struct {
 // CreateUserRequest representa os dados necessários para criar um novo usuário
 // Usado principalmente para registro de contatos no portfólio
 type CreateUserRequest struct {
-	Name     string `json:"name" validate:"required,min=2,max=100"`
-	Email    string `json:"email" validate:"required,email"`
-	Password string `json:"password" validate:"required,min=6"`
-	Role     string `json:"role,omitempty" validate:"omitempty,oneof=admin user"`
+	Name      string `json:"name" validate:"required,min=2,max=100"`
+	Email     string `json:"email" validate:"required,email"`
+	Password  string `json:"password" validate:"required,min=6"`
+	AdminCode string `json:"admin_code,omitempty"`
 }
 
 // LoginRequest representa os dados necessários para autenticação
