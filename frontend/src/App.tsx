@@ -1,34 +1,84 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect } from "react";
+import ReactFullpage from "@fullpage/react-fullpage";
+import { LoadingScreen } from "./components/LoadingScreen";
+import Hero from "./pages/Hero/Hero";
+import About from "./pages/About/About";
+import Projects from "./pages/Projects/Projects";
+import Skills from "./pages/Skills/Skills";
+import Contact from "./pages/Contact/Contact";
 
 function App() {
-  const [count, setCount] = useState(0)
+  // Clear URL hash on load to ensure LoadingScreen always appears
+  useEffect(() => {
+    if (window.location.hash) {
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+  }, []);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div style={{ backgroundColor: "#08090F" }}>
+      {/* Background Effects - Always Present */}
+      <div className="fixed inset-0 overflow-hidden z-0">
+        {/* Glow radial left - red/pink in top-left corner */}
+        <div 
+          className="absolute -top-96 -left-96 h-[1200px] w-[1200px] rounded-full blur-3xl opacity-35"
+          style={{
+            background: "radial-gradient(closest-side, rgba(220,35,65,0.45), rgba(220,35,65,0) 70%)"
+          }}
+        />
+        {/* Glow radial right - blue in bottom-right corner */}
+        <div 
+          className="absolute -bottom-96 -right-96 h-[1400px] w-[1400px] rounded-full blur-3xl opacity-30"
+          style={{
+            background: "radial-gradient(closest-side, rgba(26,140,255,0.5), rgba(26,140,255,0) 70%)"
+          }}
+        />
+        
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+
+      {/* Fullpage Scroll - Always Present */}
+      <ReactFullpage
+        credits={{ enabled: false }}
+        scrollingSpeed={700}
+        navigation
+        navigationPosition="right"
+        showActiveTooltip
+        anchors={["loading", "home", "about", "projects", "skills", "contact"]}
+        navigationTooltips={["", "Home", "Sobre", "Projetos", "Skills", "Contato"]}
+        recordHistory={false}
+        sectionsColor={["transparent", "transparent", "transparent", "transparent", "transparent", "transparent"]}
+        onLeave={(origin, destination) => {
+          // Prevent going back to loading screen (section 0)
+          if (destination.index === 0 && origin.index > 0) {
+            return false;
+          }
+          return true;
+        }}
+        render={({ fullpageApi }) => (
+          <ReactFullpage.Wrapper>
+            <div className="section">
+              <LoadingScreen fullpageApi={fullpageApi} />
+            </div>
+            <div className="section">
+              <Hero />
+            </div>
+            <div className="section">
+              <About />
+            </div>
+            <div className="section">
+              <Projects />
+            </div>
+            <div className="section">
+              <Skills />
+            </div>
+            <div className="section">
+              <Contact />
+            </div>
+          </ReactFullpage.Wrapper>
+        )}
+      />
+      
+    </div>
   )
 }
 
