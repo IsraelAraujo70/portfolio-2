@@ -16,3 +16,25 @@ export interface FullpageApi {
 export interface LoadingScreenProps {
   fullpageApi: FullpageApi | null | undefined;
 }
+
+// Typography
+export type TitleTag = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+export type TitleProps = {
+  as?: TitleTag;
+  className?: string;
+  children: ReactNode;
+};
+
+export type TextTag = "p" | "div";
+export type TextProps = {
+  as?: TextTag;
+  className?: string;
+  children: ReactNode;
+};
+
+export type InlineTag = "span" | "strong" | "em";
+export type InlineProps = {
+  as?: InlineTag;
+  className?: string;
+  children: ReactNode;
+};

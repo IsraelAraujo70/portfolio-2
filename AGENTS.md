@@ -65,6 +65,24 @@ portfolio-2/
   - `bun run test` (Jest)
 - Estrutura: páginas em `src/pages/*`, componentes utilitários em `src/components/*`.
 
+### Componentização Global (Decisão de Arquitetura)
+- Objetivo: todo markup e atributos HTML devem ficar encapsulados em componentes reutilizáveis. Páginas não devem usar tags HTML cruas (ex.: `h1`, `p`, `span`) nem classes diretamente — em vez disso, devem compor componentes.
+- Benefícios: consistência visual, redução de duplicidade, refactor seguro, melhor acessibilidade por padrão.
+- Componentes base atuais:
+  - `src/components/GlassCard.tsx`: card com efeito glass. Props: `hover?`, `className?`.
+  - Tipografia (`src/components/typography/*`):
+    - `Title`: renderiza `h1..h6` via prop `as` e aplica estilos padronizados.
+    - `Text`: renderiza `p`/`div` via `as` com estilos de parágrafo.
+    - `Inline`: renderiza `span`/`strong`/`em` via `as` com estilos inline.
+- Tipos centralizados: `src/components/types.ts` exporta todas as props públicas dos componentes.
+- Regras de uso:
+  - Em páginas e features, use somente os componentes base acima (ou outros já existentes) — evite HTML cru e classes Tailwind diretas.
+  - Novos estilos/variações devem ser adicionados como props no componente base, nunca direto na página.
+  - Exceções: componentes de baixo nível dentro de `src/components` podem usar tags HTML para implementação interna.
+- Próximos passos sugeridos:
+  - Migrar conteúdos das páginas para usar `Title`, `Text` e `Inline` quando houver conteúdo textual.
+  - Criar componentes adicionais conforme necessidade (ex.: `Button`, `Link`, `Section`, `Stack`).
+
 ## Convenções de Código
 - Geral:
   - Evite mudanças fora do escopo solicitado.
