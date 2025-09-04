@@ -38,3 +38,12 @@ export type InlineProps = {
   className?: string;
   children: ReactNode;
 };
+
+// Social / Media Buttons
+export type SocialButtonProps = {
+  href: string;
+  icon: ReactNode;
+  label?: string; // acessibilidade
+  newTab?: boolean;
+  className?: string;
+};
