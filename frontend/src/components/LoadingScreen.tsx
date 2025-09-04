@@ -2,10 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-
-interface LoadingScreenProps {
-  fullpageApi: any;
-}
+import type { LoadingScreenProps } from "./types";
 
 export function LoadingScreen({ fullpageApi }: LoadingScreenProps) {
   const [stage, setStage] = useState(0);
