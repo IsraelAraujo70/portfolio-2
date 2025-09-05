@@ -10,7 +10,8 @@ export type GlassCardProps = {
 export interface FullpageApi {
   moveSectionDown: () => void;
   moveSectionUp?: () => void;
-  moveTo?: (section: number, slide?: number) => void;
+  // Accepts numeric index (1-based) or anchor string
+  moveTo?: (section: number | string, slide?: number) => void;
 }
 
 export interface LoadingScreenProps {
@@ -46,4 +47,15 @@ export type SocialButtonProps = {
   label?: string; // acessibilidade
   newTab?: boolean;
   className?: string;
+};
+
+export type SidebarItem = {
+  key: "home" | "projects" | "contact";
+  label: string;
+  icon: React.ComponentType<{ size?: number; className?: string }>;
+};
+
+export type SidebarProps = {
+  fullpageApi: FullpageApi | null | undefined;
+  visible: boolean;
 };

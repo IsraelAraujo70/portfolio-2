@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ReactFullpage from "@fullpage/react-fullpage";
 import { LoadingScreen } from "./components/LoadingScreen";
 import Hero from "./pages/Hero/Hero";
@@ -6,8 +6,13 @@ import About from "./pages/About/About";
 import Projects from "./pages/Projects/Projects";
 import Skills from "./pages/Skills/Skills";
 import Contact from "./pages/Contact/Contact";
+import Sidebar from "./components/Sidebar/Sidebar";
+import type { FullpageApi } from "./components/types";
 
 function App() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [fullpageApi, setFullpageApi] = useState<FullpageApi | null | undefined>(null);
+
   // Clear URL hash on load to ensure LoadingScreen always appears
   useEffect(() => {
     if (window.location.hash) {
@@ -36,8 +41,12 @@ function App() {
         
       </div>
 
+      {/* Sidebar */}
+      <Sidebar fullpageApi={fullpageApi} visible={activeIndex >= 2} />
+
       {/* Fullpage Scroll - Always Present */}
       <ReactFullpage
+        licenseKey="gplv3-license"
         credits={{ enabled: false }}
         scrollingSpeed={700}
         navigation
@@ -54,28 +63,38 @@ function App() {
           }
           return true;
         }}
-        render={({ fullpageApi }) => (
-          <ReactFullpage.Wrapper>
-            <div className="section h-screen">
-              <LoadingScreen fullpageApi={fullpageApi} />
-            </div>
-            <div className="section h-screen">
-              <Hero />
-            </div>
-            <div className="section h-screen">
-              <About />
-            </div>
-            <div className="section h-screen">
-              <Projects />
-            </div>
-            <div className="section h-screen">
-              <Skills />
-            </div>
-            <div className="section h-screen">
-              <Contact />
-            </div>
-          </ReactFullpage.Wrapper>
-        )}
+        afterLoad={(_origin, destination) => {
+          // destination.index is 0-based
+          setActiveIndex(destination.index);
+        }}
+        render={({ fullpageApi: api }) => {
+          // Store the API for use in the outside Sidebar
+          if (api !== fullpageApi) {
+            setFullpageApi(api);
+          }
+          return (
+            <ReactFullpage.Wrapper>
+              <div className="section h-screen">
+                <LoadingScreen fullpageApi={api} />
+              </div>
+              <div className="section h-screen">
+                <Hero />
+              </div>
+              <div className="section h-screen">
+                <About />
+              </div>
+              <div className="section h-screen">
+                <Projects />
+              </div>
+              <div className="section h-screen">
+                <Skills />
+              </div>
+              <div className="section h-screen">
+                <Contact />
+              </div>
+            </ReactFullpage.Wrapper>
+          );
+        }}
       />
       
     </div>
