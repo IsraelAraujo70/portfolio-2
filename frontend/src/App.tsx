@@ -16,7 +16,7 @@ function App() {
   }, []);
 
   return (
-    <div style={{ backgroundColor: "#08090F" }}>
+    <div style={{ backgroundColor: "#08090F" }} className="min-h-screen">
       {/* Background Effects - Always Present */}
       <div className="fixed inset-0 overflow-hidden z-0">
         {/* Glow radial left - red/pink in top-left corner */}
@@ -56,22 +56,22 @@ function App() {
         }}
         render={({ fullpageApi }) => (
           <ReactFullpage.Wrapper>
-            <div className="section">
+            <div className="section h-screen">
               <LoadingScreen fullpageApi={fullpageApi} />
             </div>
-            <div className="section">
+            <div className="section h-screen">
               <Hero />
             </div>
-            <div className="section">
+            <div className="section h-screen">
               <About />
             </div>
-            <div className="section">
+            <div className="section h-screen">
               <Projects />
             </div>
-            <div className="section">
+            <div className="section h-screen">
               <Skills />
             </div>
-            <div className="section">
+            <div className="section h-screen">
               <Contact />
             </div>
           </ReactFullpage.Wrapper>
