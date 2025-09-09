@@ -66,16 +66,6 @@ export default function HeroAside() {
               GitHub
             </Button>
           </div>
-
-          <div className="w-full pt-2 border-t border-foreground-tertiary/20 text-center">
-            <Text className="text-xs text-[#a7b8c6] mb-2">Disponível para:</Text>
-            <div className="flex flex-wrap gap-1 justify-center">
-              <Badge variant="outline" className="text-xs">Mudança</Badge>
-              <Badge variant="outline" className="text-xs">Remoto</Badge>
-              <Badge variant="outline" className="text-xs">Híbrido</Badge>
-            </div>
-          </div>
-
           <div className="w-full pt-2 border-t border-foreground-tertiary/20 text-center mt-2">
             <SkillsRadar />
           </div>

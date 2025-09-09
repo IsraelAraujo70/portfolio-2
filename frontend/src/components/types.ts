@@ -40,6 +40,21 @@ export type InlineProps = {
   children: ReactNode;
 };
 
+// Lists
+export type ListTag = "ul" | "ol";
+export type ListProps = {
+  as?: ListTag;
+  size?: "sm" | "md"; // spacing + font sizing
+  nested?: boolean; // adds indentation + top margin
+  className?: string;
+  children: ReactNode;
+};
+
+export type ListItemProps = {
+  className?: string;
+  children: ReactNode;
+};
+
 // Social / Media Buttons
 export type SocialButtonProps = {
   href: string;
