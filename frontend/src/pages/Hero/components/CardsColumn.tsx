@@ -1,6 +1,6 @@
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Title, Text, List, ListItem } from "../../../components/typography";
+import { Title} from "../../../components/typography";
 import ExperienceTimeline from "./ExperienceTimeline";
 import { Briefcase, GraduationCap, Code } from "lucide-react";
 import TechCarousel from "./TechCarousel";
