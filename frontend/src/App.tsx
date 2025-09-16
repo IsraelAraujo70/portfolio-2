@@ -2,9 +2,8 @@ import { useEffect, useState } from "react";
 import ReactFullpage from "@fullpage/react-fullpage";
 import { LoadingScreen } from "./components/LoadingScreen";
 import Hero from "./pages/Hero/Hero";
-import About from "./pages/About/About";
 import Projects from "./pages/Projects/Projects";
-import Skills from "./pages/Skills/Skills";
+import Chat from "./pages/Chat";
 import Contact from "./pages/Contact/Contact";
 import Sidebar from "./components/Sidebar/Sidebar";
 import type { FullpageApi } from "./components/types";
@@ -52,10 +51,10 @@ function App() {
         navigation
         navigationPosition="right"
         showActiveTooltip
-        anchors={["loading", "home", "about", "projects", "skills", "contact"]}
-        navigationTooltips={["", "Home", "Sobre", "Projetos", "Skills", "Contato"]}
+        anchors={["loading", "home", "projects", "chat", "contact"]}
+        navigationTooltips={["", "Home", "Projetos", "Chat", "Contato"]}
         recordHistory={false}
-        sectionsColor={["transparent", "transparent", "transparent", "transparent", "transparent", "transparent"]}
+        sectionsColor={["transparent", "transparent", "transparent", "transparent", "transparent"]}
         onLeave={(origin, destination) => {
           // Prevent going back to loading screen (section 0)
           if (destination.index === 0 && origin.index > 0) {
@@ -81,13 +80,10 @@ function App() {
                 <Hero />
               </div>
               <div className="section h-screen">
-                <About />
-              </div>
-              <div className="section h-screen">
                 <Projects />
               </div>
               <div className="section h-screen">
-                <Skills />
+                <Chat />
               </div>
               <div className="section h-screen">
                 <Contact />

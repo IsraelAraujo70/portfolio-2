@@ -1,6 +1,6 @@
 import { useMemo, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Code2, Home, MessageSquareText, X } from "lucide-react";
+import { Code2, Home, MessageCircle, MessageSquareText, X } from "lucide-react";
 import GlassCard from "../GlassCard";
 import type { SidebarProps, SidebarItem } from "../types";
 
@@ -12,6 +12,7 @@ export default function Sidebar({ fullpageApi, visible }: SidebarProps) {
     () => [
       { key: "home", label: "Home", icon: Home },
       { key: "projects", label: "Projects", icon: Code2 },
+      { key: "chat", label: "Chat", icon: MessageCircle },
       { key: "contact", label: "Contact", icon: MessageSquareText },
     ],
     []

@@ -65,7 +65,7 @@ export type SocialButtonProps = {
 };
 
 export type SidebarItem = {
-  key: "home" | "projects" | "contact";
+  key: "home" | "projects" | "chat" | "contact";
   label: string;
   icon: React.ComponentType<{ size?: number; className?: string }>;
 };
