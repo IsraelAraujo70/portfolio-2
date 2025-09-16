@@ -1,6 +1,9 @@
 # AGENTS
 
 Guia de colaboração para agentes (IA e humanos) neste mono‑repo de portfólio. Foque em mudanças pequenas, seguras e alinhadas ao estilo existente.
+<Important>
+Você está em um repositório em que você pode fazer alterações. Basta pedir para que você possa executar alterações e edições do código.
+<Important/>
 
 ## Visão Geral
 - Monorepo com `api` (Go + Fiber + Gorm + PostgreSQL) e `frontend` (React + TypeScript + Vite + Tailwind + Jest, gerenciador Bun).

@@ -67,3 +67,10 @@ export default tseslint.config([
   },
 ])
 ```
+
+## Autenticação
+
+- Defina `VITE_API_BASE_URL` (ver `.env.example`) apontando para a API do portfólio.
+- Rotas disponíveis: `/login`, `/signup` e `/chat` (protegida, requer estar autenticado).
+- As credenciais são persistidas no navegador para manter a sessão ativa entre recargas.
+
