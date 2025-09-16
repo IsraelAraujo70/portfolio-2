@@ -1,12 +1,16 @@
 import { useMemo, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Code2, Home, MessageCircle, MessageSquareText, X } from "lucide-react";
+import { Code2, Home, LogIn, LogOut, MessageCircle, MessageSquareText, UserCircle2, X } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import GlassCard from "../GlassCard";
 import type { SidebarProps, SidebarItem } from "../types";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Sidebar({ fullpageApi, visible }: SidebarProps) {
   const [isMobile, setIsMobile] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const { user, logout, isLoading } = useAuth();
   
   const items: SidebarItem[] = useMemo(
     () => [
@@ -17,6 +21,17 @@ export default function Sidebar({ fullpageApi, visible }: SidebarProps) {
     ],
     []
   );
+
+  const handleAuthNavigate = () => {
+    if (user) {
+      logout();
+      navigate("/", { replace: true });
+      fullpageApi?.moveTo?.("home");
+    } else {
+      navigate("/login", { state: { from: "/#chat" } });
+    }
+    setIsMobileMenuOpen(false);
+  };
 
   // Detect mobile screen size
   useEffect(() => {
@@ -104,6 +119,27 @@ export default function Sidebar({ fullpageApi, visible }: SidebarProps) {
                       </button>
                     ))}
                   </nav>
+                  <div className="pt-6 border-t border-white/10">
+                    <button
+                      type="button"
+                      onClick={handleAuthNavigate}
+                      className="w-full flex items-center justify-between gap-3 rounded-xl bg-white/5 px-4 py-3 text-white/90 hover:bg-white/10 transition-all"
+                      disabled={isLoading}
+                    >
+                      <div className="flex items-center gap-3">
+                        {user ? <UserCircle2 size={24} /> : <LogIn size={24} />}
+                        <div className="text-left">
+                          <span className="text-sm font-medium block">
+                            {user ? user.name : "Entrar"}
+                          </span>
+                          <span className="text-xs text-white/60 block">
+                            {user ? "Sair da conta" : "Acessar para conversar"}
+                          </span>
+                        </div>
+                      </div>
+                      {user ? <LogOut size={18} /> : null}
+                    </button>
+                  </div>
                 </GlassCard>
               </motion.aside>
             </>
@@ -150,6 +186,29 @@ export default function Sidebar({ fullpageApi, visible }: SidebarProps) {
                 </button>
               ))}
             </nav>
+            <div className="px-3 group-hover:px-4 pb-2">
+              <button
+                type="button"
+                onClick={handleAuthNavigate}
+                className="w-full flex items-center justify-center group-hover:justify-between gap-3 rounded-xl bg-white/5 px-3 py-2.5 text-white/90 hover:bg-white/10 transition-all"
+                disabled={isLoading}
+              >
+                <span className="flex items-center justify-center rounded-xl bg-white/10 p-2">
+                  {user ? <UserCircle2 size={20} className="text-white" /> : <LogIn size={20} className="text-white" />}
+                </span>
+                <div className="hidden group-hover:flex flex-1 flex-col items-start overflow-hidden">
+                  <span className="text-sm font-medium text-white truncate">
+                    {user ? user.name : "Entrar"}
+                  </span>
+                  <span className="text-xs text-white/60 truncate">
+                    {user ? user.email : "Acessar para conversar"}
+                  </span>
+                </div>
+                {user ? (
+                  <LogOut size={18} className="hidden group-hover:block text-white/80" />
+                ) : null}
+              </button>
+            </div>
           </GlassCard>
         </motion.aside>
       )}
