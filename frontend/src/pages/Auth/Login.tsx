@@ -34,9 +34,12 @@ export default function LoginPage() {
   });
   const [localError, setLocalError] = useState<string | null>(null);
 
-  const from = normalizeTarget((location.state as LocationState | undefined)?.from);
+  const from = normalizeTarget(
+    (location.state as LocationState | undefined)?.from,
+  );
 
-  const handleChange = (field: keyof LoginCredentials) =>
+  const handleChange =
+    (field: keyof LoginCredentials) =>
     (event: ChangeEvent<HTMLInputElement>) => {
       setCredentials((prev) => ({ ...prev, [field]: event.target.value }));
     };
@@ -49,7 +52,8 @@ export default function LoginPage() {
       await login(credentials);
       navigate(from, { replace: true });
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Não foi possível entrar";
+      const message =
+        err instanceof Error ? err.message : "Não foi possível entrar";
       setLocalError(message);
     }
   };
@@ -62,8 +66,11 @@ export default function LoginPage() {
       subtitle="Faça login para continuar a conversa comigo"
       footer={
         <Text as="div" className="text-center text-sm text-white/70">
-          Ainda não tem conta? {" "}
-          <Link to="/signup" className="text-cyan-300 hover:text-cyan-200 underline">
+          Ainda não tem conta?{" "}
+          <Link
+            to="/signup"
+            className="text-cyan-300 hover:text-cyan-200 underline"
+          >
             Crie agora
           </Link>
         </Text>
