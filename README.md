@@ -6,11 +6,14 @@ Este é um mono-repo contendo uma API em Golang e um frontend em React.
 
 ```
 portfolio-2/
-├── api/                    # Backend em Golang
-│   ├── main.go            # Servidor principal
+├── api/                    # Backend em Golang (Arquitetura Hexagonal)
+│   ├── main.go            # Servidor principal (Injeção de dependências)
 │   ├── go.mod             # Dependências Go
 │   ├── docker-compose.yml # PostgreSQL local
-│   └── .env.example       # Variáveis de ambiente
+│   ├── .env.example       # Variáveis de ambiente
+│   └── internal/          # Código interno da aplicação
+│       ├── core/          # Lógica de negócio pura (Domínio, Portas, Serviços)
+│       └── adapters/      # Implementações externas (HTTP, Repositório, Segurança)
 └── frontend/              # Frontend React + Vite
     ├── src/               # Código fonte
     ├── package.json       # Dependências Node.js
@@ -20,9 +23,11 @@ portfolio-2/
 ## Tecnologias
 
 ### Backend
-- Go
-- PostgreSQL
-- Driver lib/pq
+- **Linguagem**: Go
+- **Web Framework**: Fiber + Huma (OpenAPI/Swagger automático)
+- **ORM**: GORM
+- **Banco de Dados**: PostgreSQL
+- **Arquitetura**: Hexagonal (Ports & Adapters)
 
 ### Frontend
 - React 19
@@ -41,6 +46,8 @@ docker-compose up -d  # Iniciar PostgreSQL
 go run main.go        # Iniciar servidor
 ```
 
+A documentação da API (Swagger UI) estará disponível em: `http://localhost:8080/docs`
+
 ### Frontend
 ```bash
 cd frontend
@@ -52,3 +59,4 @@ bun run test         # Executar testes
 ## Deploy
 
 O projeto está configurado para deploy no Railway usando `railway.toml`.
+

@@ -6,7 +6,7 @@ Você está em um repositório em que você pode fazer alterações. Basta pedir
 <Important/>
 
 ## Visão Geral
-- Monorepo com `api` (Go + Fiber + Gorm + PostgreSQL) e `frontend` (React + TypeScript + Vite + Tailwind + Jest, gerenciador Bun).
+- Monorepo com `api` (Go + Fiber + Huma + Gorm + PostgreSQL - Arquitetura Hexagonal) e `frontend` (React + TypeScript + Vite + Tailwind + Jest, gerenciador Bun).
 - Coleção Postman: `Portfolio_API.postman_collection.json`.
 - Deploy via Railway: `railway.toml`.
 
@@ -14,17 +14,20 @@ Você está em um repositório em que você pode fazer alterações. Basta pedir
 ```
 portfolio-2/
 ├── api/
-│   ├── main.go
+│   ├── main.go        # Ponto de entrada, injeção de dependências
 │   ├── go.mod, go.sum
 │   ├── docker-compose.yml
 │   ├── .env.example
-│   ├── config/        # DB, conexões
-│   ├── handlers/      # handlers HTTP (auth, users, ...)
-│   ├── middleware/    # CORS, auth, etc.
-│   ├── migrations/    # SQL de migrações
-│   ├── models/        # modelos Gorm
-│   ├── routes/        # definição de rotas
-│   └── utils/         # helpers (ex.: auth)
+│   ├── internal/
+│   │   ├── core/                # Regras de negócio (Puro Go)
+│   │   │   ├── domain/          # Entidades (ex: User)
+│   │   │   ├── ports/           # Interfaces (ex: UserRepository)
+│   │   │   └── services/        # Implementação dos casos de uso
+│   │   └── adapters/            # Integrações externas
+│   │       ├── handler/         # HTTP/Web (Huma + Fiber)
+│   │       ├── repository/      # Banco de dados (GORM/Postgres)
+│   │       └── security/        # Auth (Bcrypt, JWT)
+│   └── migrations/    # SQL de migrações (se aplicável)
 ├── frontend/
 │   ├── src/           # páginas e componentes
 │   ├── package.json   # scripts (vite, jest, eslint)
@@ -43,7 +46,8 @@ portfolio-2/
 - Documentar: atualize `README.md` e `.env.example` quando necessário.
 
 ## Backend (api)
-- Stack: Go + Fiber + Gorm + PostgreSQL.
+- Stack: Go + Fiber (Huma adapter) + Gorm + PostgreSQL.
+- Arquitetura: Hexagonal (Ports and Adapters).
 - Rodar local:
   - Banco: `cd api && docker-compose up -d`
   - Servidor: `go run main.go`
@@ -52,13 +56,13 @@ portfolio-2/
   - `PORT` (default `8080`)
   - `JWT_SECRET`
   - `ADMIN_REGISTRATION_CODE`
-- Migrações: SQL em `api/migrations` + `AutoMigrate` para `models.User`.
+- Migrações: `AutoMigrate` em `main.go` para `repository.UserGorm` (dev).
 - Onde mudar o quê:
-  - Rotas: `api/routes/routes.go`
-  - Middlewares: `api/middleware/*`
-  - Handlers: `api/handlers/*`
-  - Modelos: `api/models/*`
-  - DB/Config: `api/config/database.go`
+  - **Regras de Negócio**: `api/internal/core/services/`
+  - **Definição de Entidades**: `api/internal/core/domain/`
+  - **Novos Endpoints (Contrato)**: `api/internal/adapters/handler/handler.go` e `types.go`
+  - **Banco de Dados**: `api/internal/adapters/repository/`
+  - **Segurança/Auth**: `api/internal/adapters/security/`
 
 ## Frontend (frontend)
 - Stack: React 19, TypeScript, Vite, Tailwind CSS, Jest.
@@ -93,7 +97,7 @@ portfolio-2/
   - Mantenha nomes de arquivos e APIs existentes quando possível.
 - Go:
   - Formatação padrão (`gofmt`/`goimports`).
-  - Erros com contexto; handlers retornam JSON via Fiber com o error handler global.
+  - Erros com contexto.
   - Pacotes curtos e descritivos; structs e campos com nomes claros.
 - Frontend:
   - TypeScript estrito quando aplicável; tipos explícitos em APIs públicas.
@@ -105,13 +109,13 @@ portfolio-2/
 - Escopo pequeno e bem descrito.
 - `frontend`: `bun run lint` e `bun run test` sem falhas.
 - Build local do `frontend` passa (`bun run build`).
-- `api` compila e roda localmente; migrações testadas quando alteradas.
+- `api` compila e roda localmente; testes unitários (`go test ./...`) passam.
 - Documentação atualizada (inclui exemplos de `.env`).
 - Sem segredos no repositório; use `.env` local e mantenha `.env.example` atualizado.
 
 ## Segurança e Segredos
 - Nunca faça commit de chaves reais (`JWT_SECRET`, senhas, tokens).
-- Valide entradas no backend; mantenha autenticação/autorizações nos handlers.
+- Valide entradas no backend (o Huma ajuda com validação via struct tags).
 - Reveja CORS e middlewares de segurança ao expor novos endpoints.
 
 ## Dicas de Solução de Problemas
@@ -121,7 +125,7 @@ portfolio-2/
 - Testes Jest: confira `frontend/jest.config.js` e `frontend/src/setupTests.ts`.
 
 ## Verificação da Estrutura (atual)
-- `api`: pastas `config`, `handlers`, `middleware`, `migrations`, `models`, `routes`, `utils` presentes; arquivos chave `main.go`, `go.mod`, `.env.example`, `docker-compose.yml` presentes.
+- `api`: `main.go`, `go.mod`. Diretório `internal/` contendo `core/` (domain, ports, services) e `adapters/` (handler, repository, security).
 - `frontend`: `src/`, `package.json`, `tailwind.config.js` presentes; páginas em `src/pages/*` e componentes em `src/components/*`.
 - `README.md` condiz com a estrutura real do repositório.
 

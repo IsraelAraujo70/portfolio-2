@@ -1,0 +1,17 @@
+{
+  "name": "portfolio-monorepo-root",
+  "private": true,
+  "scripts": {
+    "prepare": "husky",
+    "db:up": "cd api && docker compose up -d",
+    "dev:frontend": "cd frontend && bun run dev",
+    "dev:api": "cd api && go run main.go",
+    "dev": "bun run db:up && concurrently -n \"API,FRONT\" -c \"blue,magenta\" \"bun run dev:api\" \"bun run dev:frontend\"",
+    "test": "concurrently -n \"API,FRONT\" -c \"blue,magenta\" \"cd api && go test ./...\" \"cd frontend && bun run test\"",
+    "build:frontend": "cd frontend && bun run build"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "husky": "^9.0.11"
+  }
+}

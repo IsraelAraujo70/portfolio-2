@@ -1,0 +1,41 @@
+#!/bin/sh
+
+echo "------------------------------------------------"
+echo "🚀 Running Pre-commit Checks"
+echo "------------------------------------------------"
+
+# 1. Check Go Formatting
+echo "🔍 [API] Checking Go formatting..."
+cd api || exit 1
+UNFORMATTED=$(gofmt -l .)
+if [ -n "$UNFORMATTED" ]; then
+  echo "❌ [API] Go code is not formatted:"
+  echo "$UNFORMATTED"
+  echo "👉 Please run 'cd api && gofmt -w .' to fix it."
+  exit 1
+fi
+echo "✅ [API] Formatting OK"
+
+# 2. Run Go Tests
+echo "🧪 [API] Running tests..."
+if ! go test ./...; then
+  echo "❌ [API] Tests failed."
+  exit 1
+fi
+echo "✅ [API] Tests passed"
+
+# Return to root
+cd ..
+
+# 3. Run Frontend Tests
+echo "🧪 [FRONTEND] Running tests..."
+cd frontend || exit 1
+if ! bun run test; then
+  echo "❌ [FRONTEND] Tests failed."
+  exit 1
+fi
+echo "✅ [FRONTEND] Tests passed"
+
+echo "------------------------------------------------"
+echo "🎉 All checks passed! Committing..."
+echo "------------------------------------------------"

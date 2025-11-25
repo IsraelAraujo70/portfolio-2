@@ -38,12 +38,12 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"if (pm.response.code === 201) {",
+									"if (pm.response.code === 200) {",
 									"    const response = pm.response.json();",
 									"    pm.collectionVariables.set('token', response.token);",
 									"}"
-								]
-							}
+							]
+						}
 						}
 					],
 					"request": {
@@ -72,14 +72,14 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"if (pm.response.code === 201) {",
+									"if (pm.response.code === 200) {",
 									"    const response = pm.response.json();",
 									"    pm.collectionVariables.set('token', response.token);",
 									"}"
 								]
 							}
-						}
-					],
+							}
+						],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -112,8 +112,8 @@
 									"}"
 								]
 							}
-						}
-					],
+							}
+						],
 					"request": {
 						"method": "POST",
 						"header": [
