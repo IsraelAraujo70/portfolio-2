@@ -15,7 +15,10 @@ portfolio-2/
 │       ├── core/          # Lógica de negócio pura (Domínio, Portas, Serviços)
 │       └── adapters/      # Implementações externas (HTTP, Repositório, Segurança)
 └── frontend/              # Frontend React + Vite
-    ├── src/               # Código fonte
+    ├── src/
+    │   ├── features/      # Funcionalidades por domínio (Auth, Portfolio, Chat)
+    │   ├── shared/        # Componentes UI e utilitários compartilhados
+    │   └── pages/         # Roteamento
     ├── package.json       # Dependências Node.js
     └── tailwind.config.js # Configuração Tailwind
 ```
@@ -36,6 +39,7 @@ portfolio-2/
 - Tailwind CSS
 - Jest (testes)
 - Bun (package manager)
+- **Arquitetura**: Feature-Based (Modular)
 
 ## Desenvolvimento
 
@@ -59,4 +63,3 @@ bun run test         # Executar testes
 ## Deploy
 
 O projeto está configurado para deploy no Railway usando `railway.toml`.
-

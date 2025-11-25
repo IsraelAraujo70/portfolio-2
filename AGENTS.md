@@ -29,13 +29,19 @@ portfolio-2/
 │   │       └── security/        # Auth (Bcrypt, JWT)
 │   └── migrations/    # SQL de migrações (se aplicável)
 ├── frontend/
-│   ├── src/           # páginas e componentes
-│   ├── package.json   # scripts (vite, jest, eslint)
-│   ├── bun.lock       # lockfile do Bun
+│   ├── src/
+│   │   ├── features/      # Módulos de Negócio (Auth, Portfolio, Chat)
+│   │   │   ├── auth/      # Ex: components, hooks, services, types
+│   │   │   └── ...
+│   │   ├── shared/        # Componentes Genéricos e Utils
+│   │   │   ├── components/# UI Kit (Button, GlassCard, Typography)
+│   │   │   └── lib/       # Configurações globais (apiClient)
+│   │   └── pages/         # Roteamento e Composição (Thin Wrappers)
+│   ├── package.json       # scripts (vite, jest, eslint)
+│   ├── bun.lock           # lockfile do Bun
 │   └── tailwind.config.js
-├── README.md          # instruções gerais
-├── railway.toml       # deploy
-└── Portfolio_API.postman_collection.json
+├── README.md              # instruções gerais
+├── railway.toml           # deploy
 ```
 
 ## Fluxo de Trabalho Recomendado (Agentes)
@@ -66,29 +72,31 @@ portfolio-2/
 
 ## Frontend (frontend)
 - Stack: React 19, TypeScript, Vite, Tailwind CSS, Jest.
+- Arquitetura: **Feature-Based** (Inspirada em Feature-Sliced Design).
 - Rodar:
   - `cd frontend && bun install`
   - `bun run dev` (dev server)
   - `bun run test` (Jest)
-- Estrutura: páginas em `src/pages/*`, componentes utilitários em `src/components/*`.
+
+### Estrutura de Diretórios
+- **`src/features/`**: Contém o código de domínio, agrupado por funcionalidade (ex: `auth`, `portfolio`, `chat`).
+  - Cada feature possui seus próprios `components`, `hooks`, `services` e `types`.
+  - O objetivo é alta coesão: tudo relacionado a uma feature fica junto.
+- **`src/shared/`**: Código reutilizável e agnóstico ao domínio.
+  - `components/`: UI Kit base (Botões, Inputs, Cards) e Tipografia.
+  - `lib/`: Utilitários e configurações de infraestrutura (ex: cliente HTTP `apiClient`).
+- **`src/pages/`**: Camada de Roteamento.
+  - Arquivos aqui devem ser apenas "Cola" ou Wrappers que importam componentes das `features`. Não devem conter lógica de negócio ou estilização complexa.
 
 ### Componentização Global (Decisão de Arquitetura)
-- Objetivo: todo markup e atributos HTML devem ficar encapsulados em componentes reutilizáveis. Páginas não devem usar tags HTML cruas (ex.: `h1`, `p`, `span`) nem classes diretamente — em vez disso, devem compor componentes.
-- Benefícios: consistência visual, redução de duplicidade, refactor seguro, melhor acessibilidade por padrão.
-- Componentes base atuais:
-  - `src/components/GlassCard.tsx`: card com efeito glass. Props: `hover?`, `className?`.
-  - Tipografia (`src/components/typography/*`):
-    - `Title`: renderiza `h1..h6` via prop `as` e aplica estilos padronizados.
-    - `Text`: renderiza `p`/`div` via `as` com estilos de parágrafo.
-    - `Inline`: renderiza `span`/`strong`/`em` via `as` com estilos inline.
-- Tipos centralizados: `src/components/types.ts` exporta todas as props públicas dos componentes.
+- Objetivo: todo markup e atributos HTML devem ficar encapsulados em componentes reutilizáveis.
+- Componentes base atuais (agora em `src/shared/components`):
+  - `GlassCard.tsx`: card com efeito glass.
+  - Tipografia (`typography/*`): `Title`, `Text`, `Inline`.
 - Regras de uso:
-  - Em páginas e features, use somente os componentes base acima (ou outros já existentes) — evite HTML cru e classes Tailwind diretas.
-  - Novos estilos/variações devem ser adicionados como props no componente base, nunca direto na página.
-  - Exceções: componentes de baixo nível dentro de `src/components` podem usar tags HTML para implementação interna.
-- Próximos passos sugeridos:
-  - Migrar conteúdos das páginas para usar `Title`, `Text` e `Inline` quando houver conteúdo textual.
-  - Criar componentes adicionais conforme necessidade (ex.: `Button`, `Link`, `Section`, `Stack`).
+  - Prefira compor com componentes de `shared/components` ao invés de usar HTML cru.
+  - Se um componente é usado apenas em uma feature, ele deve ficar em `features/<feature>/components`.
+  - Se for usado em mais de uma feature, mova para `shared/components`.
 
 ## Convenções de Código
 - Geral:
@@ -98,38 +106,20 @@ portfolio-2/
 - Go:
   - Formatação padrão (`gofmt`/`goimports`).
   - Erros com contexto.
-  - Pacotes curtos e descritivos; structs e campos com nomes claros.
 - Frontend:
-  - TypeScript estrito quando aplicável; tipos explícitos em APIs públicas.
+  - TypeScript estrito.
+  - Imports devem usar o alias `@/` (mapeado para `src/`).
   - Componentes funcionais; preferir hooks e composição.
-  - Tailwind para estilos; evitar CSS ad‑hoc.
-  - Siga o ESLint configurado em `frontend/eslint.config.js`.
+  - Tailwind para estilos.
 
 ## Checklist de PRs/MRs
 - Escopo pequeno e bem descrito.
 - `frontend`: `bun run lint` e `bun run test` sem falhas.
 - Build local do `frontend` passa (`bun run build`).
 - `api` compila e roda localmente; testes unitários (`go test ./...`) passam.
-- Documentação atualizada (inclui exemplos de `.env`).
-- Sem segredos no repositório; use `.env` local e mantenha `.env.example` atualizado.
-
-## Segurança e Segredos
-- Nunca faça commit de chaves reais (`JWT_SECRET`, senhas, tokens).
-- Valide entradas no backend (o Huma ajuda com validação via struct tags).
-- Reveja CORS e middlewares de segurança ao expor novos endpoints.
-
-## Dicas de Solução de Problemas
-- DB: confirme `docker-compose up -d` em `api/` e `DATABASE_URL`.
-- Portas: `PORT` 8080 pode conflitar; ajuste no `.env`.
-- Bun/Node: se `bun` não estiver instalado, use `npm`/`pnpm` adaptando scripts.
-- Testes Jest: confira `frontend/jest.config.js` e `frontend/src/setupTests.ts`.
+- Documentação atualizada.
 
 ## Verificação da Estrutura (atual)
-- `api`: `main.go`, `go.mod`. Diretório `internal/` contendo `core/` (domain, ports, services) e `adapters/` (handler, repository, security).
-- `frontend`: `src/`, `package.json`, `tailwind.config.js` presentes; páginas em `src/pages/*` e componentes em `src/components/*`.
+- `api`: Arquitetura Hexagonal preservada.
+- `frontend`: Estrutura Feature-Based (`src/features`, `src/shared`, `src/pages`).
 - `README.md` condiz com a estrutura real do repositório.
-
-## Referências
-- Coleção Postman: `Portfolio_API.postman_collection.json`
-- Deploy: `railway.toml`
-- README: instruções rápidas de dev para API e Frontend
