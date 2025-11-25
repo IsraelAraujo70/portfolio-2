@@ -1,10 +1,16 @@
 import { CardHeader, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Title} from "../../../components/typography";
+import { Title } from "../../../components/typography";
 import ExperienceTimeline from "./ExperienceTimeline";
 import { Briefcase, GraduationCap, Code } from "lucide-react";
 import TechCarousel from "./TechCarousel";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import ExperienceDialogContent from "./ExperienceDialogContent";
 import { useExperience } from "../../../hooks/useExperience";
 import FormationTimeline from "./FormationTimeline";
@@ -18,12 +24,21 @@ export default function CardsColumn() {
       {/* Experiência Profissional */}
       <Dialog>
         <DialogTrigger asChild>
-          <AccentCard accent="cyan" className="relative overflow-hidden cursor-pointer">
+          <AccentCard
+            accent="cyan"
+            className="relative overflow-hidden cursor-pointer"
+          >
             <CardHeader className="pb-3">
-              <Title as="h3" className="flex items-center gap-2 text-sm md:text-base text-foreground-primary font-medium">
+              <Title
+                as="h3"
+                className="flex items-center gap-2 text-sm md:text-base text-foreground-primary font-medium"
+              >
                 <Briefcase className="h-4 w-4 text-cyan-400" />
                 Experiência
-                <Badge variant="outline" className="ml-auto text-xs bg-accent-primary/10 text-accent-primary border-accent-primary/30">
+                <Badge
+                  variant="outline"
+                  className="ml-auto text-xs bg-accent-primary/10 text-accent-primary border-accent-primary/30"
+                >
                   {experience.label}
                 </Badge>
               </Title>
@@ -36,7 +51,12 @@ export default function CardsColumn() {
         <DialogContent className="max-w-3xl p-0 glass rounded-2xl bg-background/70 border-foreground-tertiary/20">
           <DialogHeader className="sticky top-0 z-10 backdrop-blur-md bg-background/80 px-6 sm:px-8 py-5 border-b border-foreground-tertiary/10">
             <DialogTitle>
-              <Title as="h3" className="text-base sm:text-lg text-foreground-primary">Experiências</Title>
+              <Title
+                as="h3"
+                className="text-base sm:text-lg text-foreground-primary"
+              >
+                Experiências
+              </Title>
             </DialogTitle>
           </DialogHeader>
           <div className="px-6 sm:px-8 py-6">
@@ -48,7 +68,10 @@ export default function CardsColumn() {
       {/* Stack Tecnológico */}
       <AccentCard accent="teal">
         <CardHeader className="pb-3">
-          <Title as="h3" className="flex items-center gap-2 text-sm md:text-base text-foreground-primary font-medium">
+          <Title
+            as="h3"
+            className="flex items-center gap-2 text-sm md:text-base text-foreground-primary font-medium"
+          >
             <Code className="h-4 w-4 text-teal-400" />
             Tecnologias
           </Title>
@@ -61,9 +84,15 @@ export default function CardsColumn() {
       {/* Formação (com Dialog + Timeline) */}
       <Dialog>
         <DialogTrigger asChild>
-          <AccentCard accent="pink" className="relative overflow-hidden cursor-pointer">
+          <AccentCard
+            accent="pink"
+            className="relative overflow-hidden cursor-pointer"
+          >
             <CardHeader className="pb-3">
-              <Title as="h3" className="flex items-center gap-2 text-sm md:text-base text-foreground-primary font-medium">
+              <Title
+                as="h3"
+                className="flex items-center gap-2 text-sm md:text-base text-foreground-primary font-medium"
+              >
                 <GraduationCap className="h-4 w-4 text-pink-400" />
                 Formação
               </Title>
@@ -76,7 +105,12 @@ export default function CardsColumn() {
         <DialogContent className="max-w-3xl p-0 glass rounded-2xl bg-background/70 border-foreground-tertiary/20">
           <DialogHeader className="sticky top-0 z-10 backdrop-blur-md bg-background/80 px-6 sm:px-8 py-5 border-b border-foreground-tertiary/10">
             <DialogTitle>
-              <Title as="h3" className="text-base sm:text-lg text-foreground-primary">Formação</Title>
+              <Title
+                as="h3"
+                className="text-base sm:text-lg text-foreground-primary"
+              >
+                Formação
+              </Title>
             </DialogTitle>
           </DialogHeader>
           <div className="px-6 sm:px-8 py-6">

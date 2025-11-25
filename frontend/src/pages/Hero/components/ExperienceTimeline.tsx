@@ -15,18 +15,14 @@ const EXPERIENCES: Experience[] = [
     role: "Desenvolvedor Front-end",
     company: "Freelancer",
     period: "06/2023 – Atual",
-    details: [
-      { heading: "Resumo", items: ["React + TypeScript, UX e SSR"] },
-    ],
+    details: [{ heading: "Resumo", items: ["React + TypeScript, UX e SSR"] }],
   },
   {
     id: "adasistemas-junior",
     role: "Desenvolvedor Júnior",
     company: "AdaSistemas",
     period: "01/2025 – 05/2025",
-    details: [
-      { heading: "Resumo", items: ["Entregas ponta a ponta e E2E"] },
-    ],
+    details: [{ heading: "Resumo", items: ["Entregas ponta a ponta e E2E"] }],
   },
   {
     id: "adasistemas-pleno",
@@ -36,9 +32,7 @@ const EXPERIENCES: Experience[] = [
     details: [
       {
         heading: "Resumo",
-        items: [
-          "Fullstack, E2E e liderança técnica",
-        ],
+        items: ["Fullstack, E2E e liderança técnica"],
       },
     ],
   },
@@ -68,10 +62,15 @@ export default function ExperienceTimeline() {
       <div className="grid grid-cols-3 gap-2">
         {EXPERIENCES.map((xp) => (
           <div key={xp.id} className="text-center">
-            <Title as="h6" className="text-[11px] sm:text-xs font-medium text-foreground-primary">
+            <Title
+              as="h6"
+              className="text-[11px] sm:text-xs font-medium text-foreground-primary"
+            >
               {xp.role}
             </Title>
-            <Text className="text-[10px] sm:text-xs text-foreground-secondary">{xp.company}</Text>
+            <Text className="text-[10px] sm:text-xs text-foreground-secondary">
+              {xp.company}
+            </Text>
           </div>
         ))}
       </div>

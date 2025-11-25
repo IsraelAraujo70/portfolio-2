@@ -53,10 +53,15 @@ export default function FormationTimeline() {
       <div className="grid grid-cols-3 gap-2">
         {FORMATIONS.map((f) => (
           <div key={f.id} className="text-center">
-            <Title as="h6" className="text-[11px] sm:text-xs font-medium text-foreground-primary">
+            <Title
+              as="h6"
+              className="text-[11px] sm:text-xs font-medium text-foreground-primary"
+            >
               {f.title}
             </Title>
-            <Text className="text-[10px] sm:text-xs text-foreground-secondary">{f.org}</Text>
+            <Text className="text-[10px] sm:text-xs text-foreground-secondary">
+              {f.org}
+            </Text>
           </div>
         ))}
       </div>

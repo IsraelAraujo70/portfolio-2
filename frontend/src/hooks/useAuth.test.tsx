@@ -25,7 +25,10 @@ function TestHarness() {
 
   return (
     <div>
-      <button type="button" onClick={() => login({ email: "test@example.com", password: "secret" })}>
+      <button
+        type="button"
+        onClick={() => login({ email: "test@example.com", password: "secret" })}
+      >
         trigger-login
       </button>
       <button type="button" onClick={() => logout()}>
@@ -56,7 +59,10 @@ describe("useAuth", () => {
 
     await user.click(screen.getByText("trigger-login"));
 
-    expect(postLogin).toHaveBeenCalledWith({ email: "test@example.com", password: "secret" });
+    expect(postLogin).toHaveBeenCalledWith({
+      email: "test@example.com",
+      password: "secret",
+    });
     expect(await screen.findByText(mockUser.email)).toBeInTheDocument();
 
     await user.click(screen.getByText("trigger-logout"));

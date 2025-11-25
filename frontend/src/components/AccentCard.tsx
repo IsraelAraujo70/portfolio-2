@@ -10,7 +10,6 @@ type Props = {
   children: React.ReactNode;
 } & React.ComponentPropsWithoutRef<typeof Card>;
 
-
 const accentClass: Record<Accent, string> = {
   cyan: "border-cyan-400/40 ring-1 ring-cyan-400/30 shadow-[0_10px_30px_-15px_rgba(34,211,238,0.35)]",
   teal: "border-teal-400/40 ring-1 ring-teal-400/30 shadow-[0_10px_30px_-15px_rgba(45,212,191,0.35)]",
@@ -28,7 +27,7 @@ const AccentCard = React.forwardRef<HTMLDivElement, Props>(
     const classes = cn(
       "glass rounded-2xl border-2 border-transparent",
       accentClass[accent],
-      className
+      className,
     );
 
     return (
@@ -41,7 +40,7 @@ const AccentCard = React.forwardRef<HTMLDivElement, Props>(
         {children}
       </Card>
     );
-  }
+  },
 );
 
 export default AccentCard;

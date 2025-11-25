@@ -1,6 +1,15 @@
 import { useMemo, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Code2, Home, LogIn, LogOut, MessageCircle, MessageSquareText, UserCircle2, X } from "lucide-react";
+import {
+  Code2,
+  Home,
+  LogIn,
+  LogOut,
+  MessageCircle,
+  MessageSquareText,
+  UserCircle2,
+  X,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import GlassCard from "../GlassCard";
 import type { SidebarProps, SidebarItem } from "../types";
@@ -11,7 +20,7 @@ export default function Sidebar({ fullpageApi, visible }: SidebarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const { user, logout, isLoading } = useAuth();
-  
+
   const items: SidebarItem[] = useMemo(
     () => [
       { key: "home", label: "Home", icon: Home },
@@ -19,7 +28,7 @@ export default function Sidebar({ fullpageApi, visible }: SidebarProps) {
       { key: "chat", label: "Chat", icon: MessageCircle },
       { key: "contact", label: "Contact", icon: MessageSquareText },
     ],
-    []
+    [],
   );
 
   const handleAuthNavigate = () => {
@@ -38,10 +47,10 @@ export default function Sidebar({ fullpageApi, visible }: SidebarProps) {
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768);
     };
-    
+
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   // Handle mobile menu item click
@@ -77,7 +86,7 @@ export default function Sidebar({ fullpageApi, visible }: SidebarProps) {
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
               />
-              
+
               {/* Mobile sidebar */}
               <motion.aside
                 initial={{ x: -300 }}
@@ -86,13 +95,17 @@ export default function Sidebar({ fullpageApi, visible }: SidebarProps) {
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 className="fixed left-0 top-0 bottom-0 w-64 z-50"
               >
-                <GlassCard hover={false} className="h-full w-full rounded-r-2xl flex flex-col py-6 px-4">
+                <GlassCard
+                  hover={false}
+                  className="h-full w-full rounded-r-2xl flex flex-col py-6 px-4"
+                >
                   {/* Mobile Header with close button */}
                   <div className="flex items-center justify-between mb-8">
                     <div className="flex items-center gap-3">
                       <Code2 className="text-white/90" size={26} />
                       <div className="text-sm font-semibold tracking-wide bg-gradient-to-r from-white to-blue-400 bg-clip-text text-transparent">
-                        Israel <span className="text-[#23A8BF]">&lt;dev&gt;</span>
+                        Israel{" "}
+                        <span className="text-[#23A8BF]">&lt;dev&gt;</span>
                       </div>
                     </div>
                     <button
@@ -160,12 +173,17 @@ export default function Sidebar({ fullpageApi, visible }: SidebarProps) {
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
           className="group fixed left-3 top-3 bottom-3 z-50"
         >
-          <GlassCard hover={false} className="h-full w-14 group-hover:w-56 transition-all duration-300 ease-out rounded-2xl flex flex-col py-4">
+          <GlassCard
+            hover={false}
+            className="h-full w-14 group-hover:w-56 transition-all duration-300 ease-out rounded-2xl flex flex-col py-4"
+          >
             {/* Brand - Fixed at top */}
             <div className="flex items-center justify-center group-hover:justify-start gap-3 px-3 group-hover:px-4 transition-all duration-300">
               <Code2 className="text-white/90" size={26} />
               <div className="hidden group-hover:block transition-all duration-300 select-none overflow-hidden">
-                <div className="text-sm font-semibold tracking-wide whitespace-nowrap bg-gradient-to-r from-white to-blue-400 bg-clip-text text-transparent">Israel <span className="text-[#23A8BF]">&lt;dev&gt;</span></div>
+                <div className="text-sm font-semibold tracking-wide whitespace-nowrap bg-gradient-to-r from-white to-blue-400 bg-clip-text text-transparent">
+                  Israel <span className="text-[#23A8BF]">&lt;dev&gt;</span>
+                </div>
               </div>
             </div>
 
@@ -194,7 +212,11 @@ export default function Sidebar({ fullpageApi, visible }: SidebarProps) {
                 disabled={isLoading}
               >
                 <span className="flex items-center justify-center rounded-xl bg-white/10 p-2">
-                  {user ? <UserCircle2 size={20} className="text-white" /> : <LogIn size={20} className="text-white" />}
+                  {user ? (
+                    <UserCircle2 size={20} className="text-white" />
+                  ) : (
+                    <LogIn size={20} className="text-white" />
+                  )}
                 </span>
                 <div className="hidden group-hover:flex flex-1 flex-col items-start overflow-hidden">
                   <span className="text-sm font-medium text-white truncate">
@@ -205,7 +227,10 @@ export default function Sidebar({ fullpageApi, visible }: SidebarProps) {
                   </span>
                 </div>
                 {user ? (
-                  <LogOut size={18} className="hidden group-hover:block text-white/80" />
+                  <LogOut
+                    size={18}
+                    className="hidden group-hover:block text-white/80"
+                  />
                 ) : null}
               </button>
             </div>

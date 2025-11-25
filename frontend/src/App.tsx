@@ -35,7 +35,9 @@ export default App;
 
 function LandingExperience() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [fullpageApi, setFullpageApi] = useState<FullpageApi | null | undefined>(null);
+  const [fullpageApi, setFullpageApi] = useState<
+    FullpageApi | null | undefined
+  >(null);
 
   // Clear URL hash on load to ensure LoadingScreen always appears
   useEffect(() => {
@@ -57,7 +59,13 @@ function LandingExperience() {
         anchors={["loading", "home", "projects", "chat", "contact"]}
         navigationTooltips={["", "Home", "Projetos", "Chat", "Contato"]}
         recordHistory={false}
-        sectionsColor={["transparent", "transparent", "transparent", "transparent", "transparent"]}
+        sectionsColor={[
+          "transparent",
+          "transparent",
+          "transparent",
+          "transparent",
+          "transparent",
+        ]}
         onLeave={(origin, destination) => {
           // Prevent going back to loading screen (section 0)
           if (destination.index === 0 && origin.index > 0) {
@@ -102,22 +110,28 @@ function ProtectedRoute({ children }: { children: ReactNode }) {
   const { user, token, isLoading } = useAuth();
   const location = useLocation();
 
-  const loadingView = useMemo(() => (
-    <AppBackground>
-      <div className="min-h-screen flex items-center justify-center">
-        <Text as="div" className="text-base text-white/80">
-          Carregando sessão...
-        </Text>
-      </div>
-    </AppBackground>
-  ), []);
+  const loadingView = useMemo(
+    () => (
+      <AppBackground>
+        <div className="min-h-screen flex items-center justify-center">
+          <Text as="div" className="text-base text-white/80">
+            Carregando sessão...
+          </Text>
+        </div>
+      </AppBackground>
+    ),
+    [],
+  );
 
   if (isLoading && !user) {
     return loadingView;
   }
 
   if (!user || !token) {
-    const target = location.pathname === "/chat" ? "/#chat" : `${location.pathname}${location.hash ?? ""}` || "/#chat";
+    const target =
+      location.pathname === "/chat"
+        ? "/#chat"
+        : `${location.pathname}${location.hash ?? ""}` || "/#chat";
     return <Navigate to="/login" replace state={{ from: target }} />;
   }
 
@@ -134,18 +148,23 @@ function StandaloneChat() {
 
 function AppBackground({ children }: { children: ReactNode }) {
   return (
-    <div style={{ backgroundColor: "#08090F" }} className="min-h-screen w-full relative overflow-hidden">
+    <div
+      style={{ backgroundColor: "#08090F" }}
+      className="min-h-screen w-full relative overflow-hidden"
+    >
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div
           className="absolute -top-96 -left-96 h-[1200px] w-[1200px] rounded-full blur-3xl opacity-35"
           style={{
-            background: "radial-gradient(closest-side, rgba(220,35,65,0.45), rgba(220,35,65,0) 70%)",
+            background:
+              "radial-gradient(closest-side, rgba(220,35,65,0.45), rgba(220,35,65,0) 70%)",
           }}
         />
         <div
           className="absolute -bottom-96 -right-96 h-[1400px] w-[1400px] rounded-full blur-3xl opacity-30"
           style={{
-            background: "radial-gradient(closest-side, rgba(26,140,255,0.5), rgba(26,140,255,0) 70%)",
+            background:
+              "radial-gradient(closest-side, rgba(26,140,255,0.5), rgba(26,140,255,0) 70%)",
           }}
         />
       </div>

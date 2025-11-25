@@ -24,7 +24,8 @@ export default function SignupPage() {
   });
   const [localError, setLocalError] = useState<string | null>(null);
 
-  const handleChange = (field: keyof SignupFormState) =>
+  const handleChange =
+    (field: keyof SignupFormState) =>
     (event: ChangeEvent<HTMLInputElement>) => {
       setForm((prev) => ({ ...prev, [field]: event.target.value }));
     };
@@ -47,7 +48,8 @@ export default function SignupPage() {
       });
       navigate("/#chat", { replace: true });
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Não foi possível criar sua conta";
+      const message =
+        err instanceof Error ? err.message : "Não foi possível criar sua conta";
       setLocalError(message);
     }
   };
@@ -60,8 +62,11 @@ export default function SignupPage() {
       subtitle="Cadastre-se para falar comigo em tempo real"
       footer={
         <Text as="div" className="text-center text-sm text-white/70">
-          Já possui conta? {" "}
-          <Link to="/login" className="text-cyan-300 hover:text-cyan-200 underline">
+          Já possui conta?{" "}
+          <Link
+            to="/login"
+            className="text-cyan-300 hover:text-cyan-200 underline"
+          >
             Entre aqui
           </Link>
         </Text>

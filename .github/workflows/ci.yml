@@ -1,0 +1,72 @@
+name: CI - Portfolio Monorepo
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  # ======================================================
+  # JOB 1: BACKEND (GO)
+  # ======================================================
+  backend:
+    name: Backend (Go)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./api
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23' # Ajuste conforme sua versão no go.mod
+
+      - name: Check Formatting (gofmt)
+        run: |
+          if [ -n "$(gofmt -l .)" ]; then
+            echo "❌ Go code is not formatted. Please run 'gofmt -w .'"
+            gofmt -l .
+            exit 1
+          fi
+          echo "✅ Go formatting OK"
+
+      - name: Install Dependencies
+        run: go mod download
+
+      - name: Run Unit Tests
+        run: go test -v ./...
+
+  # ======================================================
+  # JOB 2: FRONTEND (REACT + BUN)
+  # ======================================================
+  frontend:
+    name: Frontend (React)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install Dependencies
+        run: bun install
+
+      - name: Check Formatting (Prettier)
+        # Usa bunx para rodar sem precisar estar no package.json obrigatoriamente, 
+        # mas idealmente deve estar nas devDependencies.
+        run: bunx prettier --check "src/**/*.{ts,tsx,json,css}"
+
+      - name: Run Tests
+        run: bun run test

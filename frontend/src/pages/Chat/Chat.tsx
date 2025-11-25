@@ -19,15 +19,26 @@ export default function Chat() {
             : "Faça login ou crie sua conta para liberar o chat assim que estiver disponível."}
         </Text>
         {user ? (
-          <Button type="button" disabled variant="secondary" className="justify-center">
+          <Button
+            type="button"
+            disabled
+            variant="secondary"
+            className="justify-center"
+          >
             Em breve disponível
           </Button>
         ) : (
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Button type="button" variant="secondary" onClick={() => navigate("/login")}>
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => navigate("/login")}
+            >
               Já tenho conta
             </Button>
-            <Button type="button" onClick={() => navigate("/signup")}>Quero me cadastrar</Button>
+            <Button type="button" onClick={() => navigate("/signup")}>
+              Quero me cadastrar
+            </Button>
           </div>
         )}
       </GlassCard>

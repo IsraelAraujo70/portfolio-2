@@ -8,7 +8,7 @@ import { useAge } from "../../../hooks/useAge";
 
 export default function HeroAside() {
   const age = useAge("2004-02-11");
-  
+
   return (
     <aside className="h-auto md:h-full flex items-center">
       <GlassCard
@@ -23,14 +23,23 @@ export default function HeroAside() {
               className="h-16 w-16 sm:h-20 sm:w-20 md:h-24 md:w-24 lg:h-28 lg:w-28 rounded-full object-cover flex-shrink-0 ring-2 ring-accent-primary/20"
             />
             <div className="leading-snug text-center">
-              <Title as="h2" className="leading-tight tracking-tight text-xl sm:text-2xl md:text-3xl lg:text-4xl">
+              <Title
+                as="h2"
+                className="leading-tight tracking-tight text-xl sm:text-2xl md:text-3xl lg:text-4xl"
+              >
                 Israel Araújo de Oliveira
               </Title>
               <div className="flex flex-wrap gap-1 mt-1 sm:mt-2 md:mt-2 justify-center">
-                <Badge variant="secondary" className="bg-accent-primary/10 text-accent-primary border-accent-primary/20 text-xs">
+                <Badge
+                  variant="secondary"
+                  className="bg-accent-primary/10 text-accent-primary border-accent-primary/20 text-xs"
+                >
                   Desenvolvedor Pleno
                 </Badge>
-                <Badge variant="outline" className="text-foreground-secondary text-xs">
+                <Badge
+                  variant="outline"
+                  className="text-foreground-secondary text-xs"
+                >
                   Fullstack
                 </Badge>
               </div>
@@ -57,11 +66,19 @@ export default function HeroAside() {
           </div>
 
           <div className="flex flex-wrap gap-2 w-full justify-center">
-            <Button size="sm" variant="outline" className="glass-button text-xs sm:text-sm">
+            <Button
+              size="sm"
+              variant="outline"
+              className="glass-button text-xs sm:text-sm"
+            >
               <ExternalLink className="h-4 w-4 mr-2" />
               LinkedIn
             </Button>
-            <Button size="sm" variant="outline" className="glass-button text-xs sm:text-sm">
+            <Button
+              size="sm"
+              variant="outline"
+              className="glass-button text-xs sm:text-sm"
+            >
               <ExternalLink className="h-4 w-4 mr-2" />
               GitHub
             </Button>

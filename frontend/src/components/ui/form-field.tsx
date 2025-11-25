@@ -11,7 +11,14 @@ type FormFieldProps = {
   children: ReactNode;
 };
 
-export function FormField({ id, label, description, error, className, children }: FormFieldProps) {
+export function FormField({
+  id,
+  label,
+  description,
+  error,
+  className,
+  children,
+}: FormFieldProps) {
   return (
     <div className={cn("space-y-2", className)}>
       <Label htmlFor={id}>{label}</Label>

@@ -27,9 +27,18 @@ echo "✅ [API] Tests passed"
 # Return to root
 cd ..
 
-# 3. Run Frontend Tests
-echo "🧪 [FRONTEND] Running tests..."
+# 3. Run Frontend Tests & Formatting
+echo "🔍 [FRONTEND] Checking formatting..."
 cd frontend || exit 1
+
+if ! bunx prettier --check "src/**/*.{ts,tsx,json,css}"; then
+  echo "❌ [FRONTEND] Code is not formatted."
+  echo "👉 Please run 'cd frontend && bun run format' to fix it."
+  exit 1
+fi
+echo "✅ [FRONTEND] Formatting OK"
+
+echo "🧪 [FRONTEND] Running tests..."
 if ! bun run test; then
   echo "❌ [FRONTEND] Tests failed."
   exit 1

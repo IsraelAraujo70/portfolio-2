@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo } from "react";
 
 export type ExperienceInfo = {
   years: number;
@@ -31,4 +31,3 @@ export function useExperience(startDate: string): ExperienceInfo {
     return { years, months, totalMonths, label };
   }, [startDate]);
 }
-

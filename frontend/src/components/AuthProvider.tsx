@@ -1,6 +1,20 @@
-import { createContext, useCallback, useEffect, useMemo, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import type { ReactNode } from "react";
-import { getProfile, postLogin, postSignup, type AuthResponse, type AuthUser, type LoginCredentials, type SignupPayload } from "@/lib/apiClient";
+import {
+  getProfile,
+  postLogin,
+  postSignup,
+  type AuthResponse,
+  type AuthUser,
+  type LoginCredentials,
+  type SignupPayload,
+} from "@/lib/apiClient";
 
 type AuthContextValue = {
   user: AuthUser | null;
@@ -13,7 +27,9 @@ type AuthContextValue = {
   refreshProfile: () => Promise<AuthUser | null>;
 };
 
-export const AuthContext = createContext<AuthContextValue | undefined>(undefined);
+export const AuthContext = createContext<AuthContextValue | undefined>(
+  undefined,
+);
 
 const STORAGE_KEY = "portfolio-auth";
 
@@ -57,7 +73,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(auth.user);
     window.localStorage.setItem(
       STORAGE_KEY,
-      JSON.stringify({ token: auth.token, user: auth.user } satisfies StoredAuth),
+      JSON.stringify({
+        token: auth.token,
+        user: auth.user,
+      } satisfies StoredAuth),
     );
   }, []);
 
@@ -67,53 +86,66 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     window.localStorage.removeItem(STORAGE_KEY);
   }, []);
 
-  const refreshProfileInternal = useCallback(async (currentToken: string) => {
-    try {
-      const profile = await getProfile(currentToken);
-      setUser(profile);
-      window.localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify({ token: currentToken, user: profile } satisfies StoredAuth),
-      );
-      return profile;
-    } catch (err) {
-      console.error("Failed to refresh profile", err);
-      clearAuth();
-      return null;
-    }
-  }, [clearAuth]);
+  const refreshProfileInternal = useCallback(
+    async (currentToken: string) => {
+      try {
+        const profile = await getProfile(currentToken);
+        setUser(profile);
+        window.localStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify({
+            token: currentToken,
+            user: profile,
+          } satisfies StoredAuth),
+        );
+        return profile;
+      } catch (err) {
+        console.error("Failed to refresh profile", err);
+        clearAuth();
+        return null;
+      }
+    },
+    [clearAuth],
+  );
 
-  const login = useCallback(async (credentials: LoginCredentials) => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const result = await postLogin(credentials);
-      persistAuth(result);
-      return result;
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Falha no login";
-      setError(message);
-      throw err;
-    } finally {
-      setIsLoading(false);
-    }
-  }, [persistAuth]);
+  const login = useCallback(
+    async (credentials: LoginCredentials) => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const result = await postLogin(credentials);
+        persistAuth(result);
+        return result;
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "Falha no login";
+        setError(message);
+        throw err;
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [persistAuth],
+  );
 
-  const signup = useCallback(async (payload: SignupPayload) => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const result = await postSignup(payload);
-      persistAuth(result);
-      return result;
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Falha no cadastro";
-      setError(message);
-      throw err;
-    } finally {
-      setIsLoading(false);
-    }
-  }, [persistAuth]);
+  const signup = useCallback(
+    async (payload: SignupPayload) => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const result = await postSignup(payload);
+        persistAuth(result);
+        return result;
+      } catch (err) {
+        const message =
+          err instanceof Error ? err.message : "Falha no cadastro";
+        setError(message);
+        throw err;
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [persistAuth],
+  );
 
   const logout = useCallback(() => {
     clearAuth();
@@ -131,16 +163,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [refreshProfileInternal, token]);
 
-  const value = useMemo<AuthContextValue>(() => ({
-    user,
-    token,
-    isLoading,
-    error,
-    login,
-    signup,
-    logout,
-    refreshProfile,
-  }), [user, token, isLoading, error, login, signup, logout, refreshProfile]);
+  const value = useMemo<AuthContextValue>(
+    () => ({
+      user,
+      token,
+      isLoading,
+      error,
+      login,
+      signup,
+      logout,
+      refreshProfile,
+    }),
+    [user, token, isLoading, error, login, signup, logout, refreshProfile],
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

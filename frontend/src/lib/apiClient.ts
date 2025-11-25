@@ -45,7 +45,8 @@ export class ApiError extends Error {
   }
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
 
 async function request<T>(path: string, init: RequestInit): Promise<T> {
   const response = await fetch(`${API_BASE_URL}${path}`, {
@@ -89,7 +90,9 @@ function mapUser(payload: ApiUserResponse): AuthUser {
   };
 }
 
-export async function postLogin(credentials: LoginCredentials): Promise<AuthResponse> {
+export async function postLogin(
+  credentials: LoginCredentials,
+): Promise<AuthResponse> {
   const result = await request<{ user: ApiUserResponse; token: string }>(
     "/api/auth/login",
     {
@@ -104,7 +107,9 @@ export async function postLogin(credentials: LoginCredentials): Promise<AuthResp
   };
 }
 
-export async function postSignup(payload: SignupPayload): Promise<AuthResponse> {
+export async function postSignup(
+  payload: SignupPayload,
+): Promise<AuthResponse> {
   const result = await request<{ user: ApiUserResponse; token: string }>(
     "/api/auth/register",
     {

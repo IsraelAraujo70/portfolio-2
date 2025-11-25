@@ -9,7 +9,11 @@ const sizeClasses: Record<NonNullable<TitleProps["as"]>, string> = {
   h6: "text-sm sm:text-base md:text-lg font-medium text-[#e6eef6]",
 };
 
-export default function Title({ as = "h1", className = "", children }: TitleProps) {
+export default function Title({
+  as = "h1",
+  className = "",
+  children,
+}: TitleProps) {
   const Tag = as;
   const classes = [sizeClasses[as], className].filter(Boolean).join(" ");
   return <Tag className={classes}>{children}</Tag>;
