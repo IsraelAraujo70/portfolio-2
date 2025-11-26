@@ -9,6 +9,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogClose,
   DialogTrigger,
 } from "@/shared/components/ui/dialog";
 import ExperienceDialogContent from "./ExperienceDialogContent";
@@ -16,6 +17,7 @@ import { useExperience } from "@/features/portfolio/hooks/useExperience";
 import FormationTimeline from "./FormationTimeline";
 import FormationDialogContent from "./FormationDialogContent";
 import AccentCard from "@/shared/components/AccentCard";
+import { X } from "lucide-react";
 
 export default function CardsColumn() {
   const experience = useExperience("2023-06-01");
@@ -48,16 +50,31 @@ export default function CardsColumn() {
             </CardContent>
           </AccentCard>
         </DialogTrigger>
-        <DialogContent className="max-w-3xl p-0 glass rounded-2xl bg-background/70 border-foreground-tertiary/20">
-          <DialogHeader className="sticky top-0 z-10 backdrop-blur-md bg-background/80 px-6 sm:px-8 py-5 border-b border-foreground-tertiary/10">
-            <DialogTitle>
-              <Title
-                as="h3"
-                className="text-base sm:text-lg text-foreground-primary"
-              >
-                Experiências
-              </Title>
-            </DialogTitle>
+        <DialogContent
+          className="max-w-3xl p-0 glass rounded-2xl bg-background/70 border-foreground-tertiary/20 max-h-[80vh] overflow-y-auto"
+          onWheel={(e) => e.stopPropagation()}
+          onTouchMove={(e) => e.stopPropagation()}
+        >
+          <DialogHeader className="sticky top-0 z-20 backdrop-blur-md bg-background/85 px-6 sm:px-8 py-5 border-b border-foreground-tertiary/10">
+            <div className="flex items-center justify-between gap-4">
+              <DialogTitle>
+                <Title
+                  as="h3"
+                  className="text-base sm:text-lg text-foreground-primary"
+                >
+                  Experiências
+                </Title>
+              </DialogTitle>
+              <DialogClose asChild>
+                <button
+                  type="button"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-foreground-tertiary/30 bg-background-primary/70 text-foreground-secondary transition hover:border-accent-primary/50 hover:text-foreground-primary focus:outline-none focus:ring-2 focus:ring-accent-primary/40"
+                >
+                  <X className="h-4 w-4" />
+                  <span className="sr-only">Fechar</span>
+                </button>
+              </DialogClose>
+            </div>
           </DialogHeader>
           <div className="px-6 sm:px-8 py-6">
             <ExperienceDialogContent />
@@ -102,16 +119,31 @@ export default function CardsColumn() {
             </CardContent>
           </AccentCard>
         </DialogTrigger>
-        <DialogContent className="max-w-3xl p-0 glass rounded-2xl bg-background/70 border-foreground-tertiary/20">
-          <DialogHeader className="sticky top-0 z-10 backdrop-blur-md bg-background/80 px-6 sm:px-8 py-5 border-b border-foreground-tertiary/10">
-            <DialogTitle>
-              <Title
-                as="h3"
-                className="text-base sm:text-lg text-foreground-primary"
-              >
-                Formação
-              </Title>
-            </DialogTitle>
+        <DialogContent
+          className="max-w-3xl p-0 glass rounded-2xl bg-background/70 border-foreground-tertiary/20 max-h-[80vh] overflow-y-auto"
+          onWheel={(e) => e.stopPropagation()}
+          onTouchMove={(e) => e.stopPropagation()}
+        >
+          <DialogHeader className="sticky top-0 z-20 backdrop-blur-md bg-background/85 px-6 sm:px-8 py-5 border-b border-foreground-tertiary/10">
+            <div className="flex items-center justify-between gap-4">
+              <DialogTitle>
+                <Title
+                  as="h3"
+                  className="text-base sm:text-lg text-foreground-primary"
+                >
+                  Formação
+                </Title>
+              </DialogTitle>
+              <DialogClose asChild>
+                <button
+                  type="button"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-foreground-tertiary/30 bg-background-primary/70 text-foreground-secondary transition hover:border-accent-primary/50 hover:text-foreground-primary focus:outline-none focus:ring-2 focus:ring-accent-primary/40"
+                >
+                  <X className="h-4 w-4" />
+                  <span className="sr-only">Fechar</span>
+                </button>
+              </DialogClose>
+            </div>
           </DialogHeader>
           <div className="px-6 sm:px-8 py-6">
             <FormationDialogContent />

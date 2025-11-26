@@ -34,19 +34,21 @@ export default function FormationTimeline() {
   return (
     <div className="w-full">
       {/* Linha com pontos (mesma grid da legenda para alinhar) */}
-      <div className="relative mt-3 mb-6">
-        <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-1 rounded-full bg-foreground-tertiary/20" />
-        <ChevronRight className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 h-4 w-4 text-foreground-tertiary/80" />
-        <div className="relative z-10 grid grid-cols-3">
-          {FORMATIONS.map((f) => (
-            <div key={f.id} className="flex flex-col items-center select-none">
-              <span className="h-4 w-4 rounded-full bg-accent-primary shadow ring-4 ring-accent-primary/30" />
-              <span className="mt-2 text-[10px] sm:text-xs text-foreground-tertiary whitespace-nowrap">
-                {f.period}
-              </span>
-            </div>
-          ))}
+      <div className="mt-3 mb-6 flex items-center gap-3">
+        <div className="relative flex-1">
+          <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-0.5 rounded-full bg-foreground-tertiary/25" />
+          <div className="relative z-10 grid grid-cols-3 items-center px-1 h-10">
+            {FORMATIONS.map((f) => (
+              <div
+                key={f.id}
+                className="flex flex-col items-center select-none"
+              >
+                <span className="h-4 w-4 rounded-full bg-accent-primary shadow ring-4 ring-accent-primary/30" />
+              </div>
+            ))}
+          </div>
         </div>
+        <ChevronRight className="h-4 w-4 text-foreground-tertiary/80" />
       </div>
 
       {/* Legenda */}
@@ -61,6 +63,9 @@ export default function FormationTimeline() {
             </Title>
             <Text className="text-[10px] sm:text-xs text-foreground-secondary">
               {f.org}
+            </Text>
+            <Text className="text-[10px] sm:text-xs text-foreground-tertiary">
+              {f.period}
             </Text>
           </div>
         ))}
