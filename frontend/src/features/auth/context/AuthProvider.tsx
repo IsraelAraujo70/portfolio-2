@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import { getProfile, postLogin, postSignup } from "../services/authService";
 import type {
@@ -13,21 +7,8 @@ import type {
   LoginCredentials,
   SignupPayload,
 } from "../types";
-
-type AuthContextValue = {
-  user: AuthUser | null;
-  token: string | null;
-  isLoading: boolean;
-  error: string | null;
-  login: (credentials: LoginCredentials) => Promise<AuthResponse>;
-  signup: (payload: SignupPayload) => Promise<AuthResponse>;
-  logout: () => void;
-  refreshProfile: () => Promise<AuthUser | null>;
-};
-
-export const AuthContext = createContext<AuthContextValue | undefined>(
-  undefined,
-);
+import { AuthContext } from "./AuthContext";
+import type { AuthContextValue } from "./AuthContext";
 
 const STORAGE_KEY = "portfolio-auth";
 
@@ -41,30 +22,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) {
-      setIsLoading(false);
-      return;
-    }
-
-    try {
-      const stored = JSON.parse(raw) as StoredAuth;
-      setToken(stored.token);
-      setUser(stored.user);
-
-      // Confirm token still valid, but don't block rendering
-      void refreshProfileInternal(stored.token);
-    } catch {
-      window.localStorage.removeItem(STORAGE_KEY);
-      setToken(null);
-      setUser(null);
-      setError("Erro ao restaurar sessão");
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
 
   const persistAuth = useCallback((auth: AuthResponse) => {
     setToken(auth.token);
@@ -105,6 +62,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     },
     [clearAuth],
   );
+
+  useEffect(() => {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (!raw) {
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const stored = JSON.parse(raw) as StoredAuth;
+      setToken(stored.token);
+      setUser(stored.user);
+
+      // Confirm token still valid, but don't block rendering
+      void refreshProfileInternal(stored.token);
+    } catch {
+      window.localStorage.removeItem(STORAGE_KEY);
+      setToken(null);
+      setUser(null);
+      setError("Erro ao restaurar sessão");
+    } finally {
+      setIsLoading(false);
+    }
+  }, [refreshProfileInternal]);
 
   const login = useCallback(
     async (credentials: LoginCredentials) => {

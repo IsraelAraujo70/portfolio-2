@@ -10,8 +10,7 @@ export class ApiError extends Error {
   }
 }
 
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
+const API_BASE_URL = resolveApiBaseUrl();
 
 export async function request<T>(path: string, init: RequestInit): Promise<T> {
   const response = await fetch(`${API_BASE_URL}${path}`, {
@@ -42,4 +41,17 @@ function safeJsonParse(value: string): unknown {
   } catch {
     return value;
   }
+}
+
+function resolveApiBaseUrl(): string {
+  const fromGlobal = (globalThis as Record<string, unknown>).__API_BASE_URL__;
+  if (typeof fromGlobal === "string" && fromGlobal.length > 0) {
+    return fromGlobal;
+  }
+
+  if (typeof process !== "undefined" && process.env?.VITE_API_BASE_URL) {
+    return process.env.VITE_API_BASE_URL;
+  }
+
+  return "http://localhost:8080";
 }
