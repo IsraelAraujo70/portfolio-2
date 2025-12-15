@@ -8,7 +8,7 @@ Você está em um repositório em que você pode fazer alterações. Basta pedir
 ## Visão Geral
 - Monorepo com `api` (Go + Fiber + Huma + Gorm + PostgreSQL - Arquitetura Hexagonal) e `frontend` (React + TypeScript + Vite + Tailwind + Jest, gerenciador Bun).
 - Coleção Postman: `Portfolio_API.postman_collection.json`.
-- Deploy via Railway: `railway.toml`.
+- Deploy via Docker Compose na raiz (`docker-compose.yml`), ideal para VPS/Coolify.
 
 ## Estrutura do Projeto
 ```

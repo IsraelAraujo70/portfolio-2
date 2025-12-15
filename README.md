@@ -62,4 +62,4 @@ bun run test         # Executar testes
 
 ## Deploy
 
-O projeto está configurado para deploy no Railway usando `railway.toml`.
+O projeto está configurado para deploy usando Docker Compose (`docker-compose.yml`), separando `postgres`, `api` e `frontend`, pensado para rodar em uma VPS (por exemplo via Coolify).
