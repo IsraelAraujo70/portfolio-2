@@ -38,8 +38,8 @@ services:
       - api
     networks:
       - portfolio_network
-    ports:
-      - "80:80"
+    expose:
+      - "80"
 
 networks:
   portfolio_network:
