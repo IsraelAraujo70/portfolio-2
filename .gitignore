@@ -59,3 +59,6 @@ api/vendor/
 *.db
 *.sqlite
 *.sqlite3
+
+.turbo/
+*/.turbo/
