@@ -1,19 +1,22 @@
 {
   "name": "portfolio-monorepo-root",
   "private": true,
-  "workspaces": ["frontend"],
+  "workspaces": ["frontend", "api"],
   "scripts": {
     "prepare": "husky",
-    "db:up": "cd api && docker compose up -d",
+    "db:up": "cd api-go-backup && docker compose up -d",
+    "migrate": "cd api && npm run migrate",
     "dev:frontend": "turbo run dev --filter=frontend",
-    "dev:api": "cd api && go run main.go",
+    "dev:api": "cd api && npm run dev",
     "dev": "bun run db:up && concurrently -n \"API,FRONT\" -c \"blue,magenta\" \"bun run dev:api\" \"bun run dev:frontend\"",
     "build": "turbo run build",
     "build:frontend": "turbo run build --filter=frontend",
-    "test": "concurrently -n \"API,FRONT\" -c \"blue,magenta\" \"cd api && go test ./...\" \"turbo run test --filter=frontend\"",
+    "test": "turbo run test --filter=frontend",
     "test:frontend": "turbo run test --filter=frontend",
     "lint": "turbo run lint",
-    "format": "turbo run format"
+    "format": "turbo run format",
+    "validate:api": "cd api && npx foa validate",
+    "list:api": "cd api && npx foa list"
   },
   "devDependencies": {
     "concurrently": "^9.2.1",

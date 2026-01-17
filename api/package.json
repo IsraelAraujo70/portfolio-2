@@ -1,0 +1,34 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "Portfolio API - Flux-Oriented Architecture",
+  "scripts": {
+    "dev": "foa dev",
+    "start": "foa start",
+    "validate": "foa validate",
+    "list": "foa list",
+    "migrate": "node scripts/migrate.js"
+  },
+  "keywords": [
+    "foa",
+    "api",
+    "portfolio"
+  ],
+  "author": "Israel Araujo",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^17.2.3",
+    "flux-oriented-architecture": "^1.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.17.1"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^25.0.9",
+    "@types/pg": "^8.16.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}

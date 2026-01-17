@@ -22,6 +22,14 @@
     },
     "format": {
       "outputs": []
+    },
+    "validate": {
+      "cache": false,
+      "outputs": []
+    },
+    "migrate": {
+      "cache": false,
+      "outputs": []
     }
   }
 }

@@ -6,28 +6,27 @@ Você está em um repositório em que você pode fazer alterações. Basta pedir
 <Important/>
 
 ## Visão Geral
-- Monorepo com `api` (Go + Fiber + Huma + Gorm + PostgreSQL - Arquitetura Hexagonal) e `frontend` (React + TypeScript + Vite + Tailwind + Jest, gerenciador Bun).
-- Coleção Postman: `Portfolio_API.postman_collection.json`.
+- Monorepo com `api` (TypeScript + FOA - Flux-Oriented Architecture + PostgreSQL) e `frontend` (React + TypeScript + Vite + Tailwind + Jest, gerenciador Bun).
 - Deploy via Docker Compose na raiz (`docker-compose.yml`), ideal para VPS/Coolify.
 
 ## Estrutura do Projeto
 ```
 portfolio-2/
 ├── api/
-│   ├── main.go        # Ponto de entrada, injeção de dependências
-│   ├── go.mod, go.sum
-│   ├── docker-compose.yml
-│   ├── .env.example
-│   ├── internal/
-│   │   ├── core/                # Regras de negócio (Puro Go)
-│   │   │   ├── domain/          # Entidades (ex: User)
-│   │   │   ├── ports/           # Interfaces (ex: UserRepository)
-│   │   │   └── services/        # Implementação dos casos de uso
-│   │   └── adapters/            # Integrações externas
-│   │       ├── handler/         # HTTP/Web (Huma + Fiber)
-│   │       ├── repository/      # Banco de dados (GORM/Postgres)
-│   │       └── security/        # Auth (Bcrypt, JWT)
-│   └── migrations/    # SQL de migrações (se aplicável)
+│   ├── src/
+│   │   ├── actions/           # Lógica de negócio (TypeScript)
+│   │   │   ├── auth/          # login, register, getMe, changePassword
+│   │   │   ├── users/         # list, create, getById, update, delete
+│   │   │   └── shared/        # validateAuth, requireAdmin, etc.
+│   │   ├── flux/              # Definições de rotas (JSON declarativo)
+│   │   │   ├── auth/          # Fluxos de autenticação
+│   │   │   └── users/         # Fluxos de CRUD de usuários
+│   │   └── types.ts           # Tipos compartilhados
+│   ├── migrations/            # SQL de migrações
+│   ├── scripts/               # Scripts utilitários (migrate.js)
+│   ├── foa.config.json        # Configuração do FOA (plugins, paths)
+│   ├── package.json
+│   └── .env.example
 ├── frontend/
 │   ├── src/
 │   │   ├── features/      # Módulos de Negócio (Auth, Portfolio, Chat)
@@ -52,23 +51,39 @@ portfolio-2/
 - Documentar: atualize `README.md` e `.env.example` quando necessário.
 
 ## Backend (api)
-- Stack: Go + Fiber (Huma adapter) + Gorm + PostgreSQL.
-- Arquitetura: Hexagonal (Ports and Adapters).
+- Stack: TypeScript + FOA (Flux-Oriented Architecture) + PostgreSQL (plugin nativo).
+- Arquitetura: **Flux-Oriented** (Actions + Flows declarativos em JSON).
 - Rodar local:
-  - Banco: `cd api && docker-compose up -d`
-  - Servidor: `go run main.go`
+  - Banco: `cd api-go-backup && docker compose up -d` (usa o docker-compose do backup)
+  - Migrações: `cd api && npm run migrate`
+  - Servidor: `cd api && npm run dev`
 - Variáveis (`api/.env.example`):
-  - `DATABASE_URL` (ou DSN default local)
+  - `DATABASE_URL` (PostgreSQL connection string)
   - `PORT` (default `8080`)
   - `JWT_SECRET`
   - `ADMIN_REGISTRATION_CODE`
-- Migrações: `AutoMigrate` em `main.go` para `repository.UserGorm` (dev).
 - Onde mudar o quê:
-  - **Regras de Negócio**: `api/internal/core/services/`
-  - **Definição de Entidades**: `api/internal/core/domain/`
-  - **Novos Endpoints (Contrato)**: `api/internal/adapters/handler/handler.go` e `types.go`
-  - **Banco de Dados**: `api/internal/adapters/repository/`
-  - **Segurança/Auth**: `api/internal/adapters/security/`
+  - **Lógica de Negócio**: `api/src/actions/` (cada arquivo é uma action)
+  - **Definição de Rotas**: `api/src/flux/` (arquivos JSON declarativos)
+  - **Autenticação**: `api/src/actions/shared/validateAuth.ts`
+  - **Configuração de Plugins**: `api/foa.config.json`
+- CLI útil:
+  - `npx foa validate` - Valida todos os fluxes JSON
+  - `npx foa list` - Lista endpoints registrados
+  - `npx foa dev` - Inicia servidor em modo desenvolvimento
+
+### Endpoints Disponíveis
+| Método | Path | Descrição | Auth |
+|--------|------|-----------|------|
+| POST | `/api/auth/login` | Login | Não |
+| POST | `/api/auth/register` | Registro | Não |
+| GET | `/api/auth/me` | Perfil do usuário | Sim |
+| PUT | `/api/auth/change-password` | Trocar senha | Sim |
+| GET | `/api/users` | Listar usuários | Admin |
+| POST | `/api/users` | Criar usuário | Admin |
+| GET | `/api/users/:id` | Buscar usuário | Admin |
+| PUT | `/api/users/:id` | Atualizar usuário | Admin |
+| DELETE | `/api/users/:id` | Deletar usuário | Admin |
 
 ## Frontend (frontend)
 - Stack: React 19, TypeScript, Vite, Tailwind CSS, Jest.
@@ -103,9 +118,11 @@ portfolio-2/
   - Evite mudanças fora do escopo solicitado.
   - Não adicione cabeçalhos de licença automaticamente.
   - Mantenha nomes de arquivos e APIs existentes quando possível.
-- Go:
-  - Formatação padrão (`gofmt`/`goimports`).
-  - Erros com contexto.
+- API (FOA):
+  - Actions são funções async que recebem `ctx: FluxContext`.
+  - Use `validateOrThrow` para validação de input.
+  - Retorne objetos com `success: boolean` para controle de fluxo.
+  - Fluxes são JSON declarativos em `src/flux/`.
 - Frontend:
   - TypeScript estrito.
   - Imports devem usar o alias `@/` (mapeado para `src/`).
@@ -116,10 +133,10 @@ portfolio-2/
 - Escopo pequeno e bem descrito.
 - `frontend`: `bun run lint` e `bun run test` sem falhas.
 - Build local do `frontend` passa (`bun run build`).
-- `api` compila e roda localmente; testes unitários (`go test ./...`) passam.
+- `api`: `npx foa validate` passa sem erros.
 - Documentação atualizada.
 
 ## Verificação da Estrutura (atual)
-- `api`: Arquitetura Hexagonal preservada.
+- `api`: Arquitetura FOA (Flux-Oriented Architecture).
 - `frontend`: Estrutura Feature-Based (`src/features`, `src/shared`, `src/pages`).
 - `README.md` condiz com a estrutura real do repositório.

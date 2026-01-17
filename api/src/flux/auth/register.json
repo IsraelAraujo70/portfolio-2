@@ -1,0 +1,33 @@
+{
+  "endpoint": "/api/auth/register",
+  "method": "POST",
+  "description": "User registration - creates user and returns JWT token",
+  "flow": [
+    {
+      "type": "action",
+      "name": "result",
+      "path": "auth/register"
+    },
+    {
+      "type": "condition",
+      "if": "!${result.success}",
+      "then": [
+        {
+          "type": "return",
+          "status": 400,
+          "body": {
+            "error": "${result.error}"
+          }
+        }
+      ]
+    },
+    {
+      "type": "return",
+      "status": 201,
+      "body": {
+        "user": "${result.user}",
+        "token": "${result.token}"
+      }
+    }
+  ]
+}

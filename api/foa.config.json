@@ -1,0 +1,28 @@
+{
+  "server": {
+    "port": 8080,
+    "cors": {
+      "origin": "*",
+      "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+      "allowedHeaders": ["Content-Type", "Authorization"]
+    }
+  },
+  "paths": {
+    "actions": "src/actions",
+    "flux": "src/flux"
+  },
+  "logging": {
+    "level": "info"
+  },
+  "plugins": {
+    "database": {
+      "type": "postgres",
+      "connectionString": "${DATABASE_URL}",
+      "pool": {
+        "max": 20,
+        "idleTimeoutMillis": 30000,
+        "connectionTimeoutMillis": 2000
+      }
+    }
+  }
+}

@@ -1,50 +1,39 @@
 #!/bin/sh
 
 echo "------------------------------------------------"
-echo "🚀 Running Pre-commit Checks"
+echo "Running Pre-commit Checks"
 echo "------------------------------------------------"
 
-# 1. Check Go Formatting
-echo "🔍 [API] Checking Go formatting..."
+# 1. Validate FOA Flux Definitions
+echo "[API] Validating flux definitions..."
 cd api || exit 1
-UNFORMATTED=$(gofmt -l .)
-if [ -n "$UNFORMATTED" ]; then
-  echo "❌ [API] Go code is not formatted:"
-  echo "$UNFORMATTED"
-  echo "👉 Please run 'cd api && gofmt -w .' to fix it."
+if ! ./node_modules/.bin/foa validate; then
+  echo "[API] Flux validation failed."
   exit 1
 fi
-echo "✅ [API] Formatting OK"
-
-# 2. Run Go Tests
-echo "🧪 [API] Running tests..."
-if ! go test ./...; then
-  echo "❌ [API] Tests failed."
-  exit 1
-fi
-echo "✅ [API] Tests passed"
+echo "[API] Validation OK"
 
 # Return to root
 cd ..
 
-# 3. Run Frontend Tests & Formatting
-echo "🔍 [FRONTEND] Checking formatting..."
+# 2. Run Frontend Tests & Formatting
+echo "[FRONTEND] Checking formatting..."
 cd frontend || exit 1
 
 if ! bunx prettier --check "src/**/*.{ts,tsx,json,css}"; then
-  echo "❌ [FRONTEND] Code is not formatted."
-  echo "👉 Please run 'cd frontend && bun run format' to fix it."
+  echo "[FRONTEND] Code is not formatted."
+  echo "Please run 'cd frontend && bun run format' to fix it."
   exit 1
 fi
-echo "✅ [FRONTEND] Formatting OK"
+echo "[FRONTEND] Formatting OK"
 
-echo "🧪 [FRONTEND] Running tests..."
+echo "[FRONTEND] Running tests..."
 if ! bun run test; then
-  echo "❌ [FRONTEND] Tests failed."
+  echo "[FRONTEND] Tests failed."
   exit 1
 fi
-echo "✅ [FRONTEND] Tests passed"
+echo "[FRONTEND] Tests passed"
 
 echo "------------------------------------------------"
-echo "🎉 All checks passed! Committing..."
+echo "All checks passed! Committing..."
 echo "------------------------------------------------"

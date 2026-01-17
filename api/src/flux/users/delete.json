@@ -1,0 +1,68 @@
+{
+  "endpoint": "/api/users/:id",
+  "method": "DELETE",
+  "description": "Delete user by ID (admin only)",
+  "flow": [
+    {
+      "type": "action",
+      "name": "auth",
+      "path": "shared/validateAuth"
+    },
+    {
+      "type": "condition",
+      "if": "!${auth.valid}",
+      "then": [
+        {
+          "type": "return",
+          "status": 401,
+          "body": {
+            "error": "${auth.error}"
+          }
+        }
+      ]
+    },
+    {
+      "type": "action",
+      "name": "adminCheck",
+      "path": "shared/requireAdmin"
+    },
+    {
+      "type": "condition",
+      "if": "!${adminCheck.allowed}",
+      "then": [
+        {
+          "type": "return",
+          "status": 403,
+          "body": {
+            "error": "${adminCheck.error}"
+          }
+        }
+      ]
+    },
+    {
+      "type": "action",
+      "name": "result",
+      "path": "users/delete"
+    },
+    {
+      "type": "condition",
+      "if": "!${result.success}",
+      "then": [
+        {
+          "type": "return",
+          "status": 404,
+          "body": {
+            "error": "${result.error}"
+          }
+        }
+      ]
+    },
+    {
+      "type": "return",
+      "status": 200,
+      "body": {
+        "message": "${result.message}"
+      }
+    }
+  ]
+}
