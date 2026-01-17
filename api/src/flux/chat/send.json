@@ -1,0 +1,32 @@
+{
+  "endpoint": "/api/chat",
+  "method": "POST",
+  "description": "Chat with Israel's curriculum using AI",
+  "flow": [
+    {
+      "type": "action",
+      "name": "result",
+      "path": "chat/send"
+    },
+    {
+      "type": "condition",
+      "if": "!${result.success}",
+      "then": [
+        {
+          "type": "return",
+          "status": 400,
+          "body": {
+            "error": "${result.error}"
+          }
+        }
+      ]
+    },
+    {
+      "type": "return",
+      "status": 200,
+      "body": {
+        "response": "${result.response}"
+      }
+    }
+  ]
+}
