@@ -4,7 +4,7 @@
   "workspaces": ["frontend", "api"],
   "scripts": {
     "prepare": "husky",
-    "db:up": "cd api-go-backup && docker compose up -d",
+    "db:up": "docker compose up -d postgres",
     "migrate": "cd api && npm run migrate",
     "dev:frontend": "turbo run dev --filter=frontend",
     "dev:api": "cd api && npm run dev",

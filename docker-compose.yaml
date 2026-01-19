@@ -1,38 +1,46 @@
-version: '3.8'
-
 services:
   postgres:
-    image: postgres:15
+    image: postgres:16-alpine
+    container_name: portfolio-postgres
     environment:
       POSTGRES_DB: portfolio
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - portfolio_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   api:
     build:
-      context: .
-      dockerfile: api/Dockerfile
+      context: ./api
+      dockerfile: Dockerfile
     environment:
       DATABASE_URL: ${DATABASE_URL:-postgres://postgres:postgres@postgres:5432/portfolio?sslmode=disable}
       PORT: 8080
-      # Substitua em produção (configure no Coolify)
       JWT_SECRET: ${JWT_SECRET:-change-me}
       ADMIN_REGISTRATION_CODE: ${ADMIN_REGISTRATION_CODE:-change-me}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     networks:
       - portfolio_network
+    expose:
+      - "8080"
 
   frontend:
     build:
-      context: .
-      dockerfile: frontend/Dockerfile
+      context: ./frontend
+      dockerfile: Dockerfile
       args:
-        # Pode ser sobrescrito no Coolify para URL pública
         VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://api:8080}
     depends_on:
       - api
